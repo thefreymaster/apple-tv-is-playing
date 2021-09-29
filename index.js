@@ -1,15 +1,24 @@
 require('dotenv').config();
 const { exec } = require("child_process");
-var LocalStorage = require('node-localstorage').LocalStorage;
-const path = require('path')
+const LocalStorage = require('node-localstorage').LocalStorage;
+const path = require('path');
+const WebSocket = require('ws');
+
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 localStorage = new LocalStorage('./localstorage');
 
 const express = require('express')
 const app = express()
 const port = 4444;
+const ws = new WebSocket('ws://192.168.124.57:9700/');
 
-let isPlaying = false;
+ws.on('open', function open() {
+    console.log("Homebridge connection open.")
+});
+
+ws.on('message', function incoming(data) {
+    console.log(data);
+});
 
 app.get('/api', async (req, res) => {
     res.send({
@@ -50,7 +59,7 @@ app.get('/api/playing', async (req, res) => {
 })
 
 app.get('/api/status', async (req, res) => {
-    res.send(localStorage.getItem('isPlaying'))
+    res.send(localStorage.getItem('isPlaying') === 'true' ? 1 : 0);
 })
 
 const updates = async () => {
@@ -60,9 +69,11 @@ const updates = async () => {
         const parsedData = JSON.parse(data);
         if (parsedData.device_state === 'paused') {
             localStorage.setItem('isPlaying', false);
+            ws.send(JSON.stringify({ "topic": "set", "payload": { "name": "isAppleTVPlaying2", "characteristic": "On", "value": false } }));
         }
         if (parsedData.device_state === 'playing') {
             localStorage.setItem('isPlaying', true);
+            ws.send(JSON.stringify({ "topic": "set", "payload": { "name": "isAppleTVPlaying2", "characteristic": "On", "value": true } }));
         }
         console.log(parsedData);
         process.stdout.write(data)
