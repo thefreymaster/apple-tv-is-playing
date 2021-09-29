@@ -24,6 +24,10 @@ app.get('/pause', async (req, res) => {
     res.send({ status: 200 })
 })
 
+app.get('/status', async (req, res) => {
+    res.send(isPlaying)
+})
+
 app.listen(port, () => {
     console.log(process.env.APPLETVMAC);
     console.log(process.env.APPLETVTOKEN)
