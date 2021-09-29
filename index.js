@@ -14,14 +14,21 @@ app.get('/play', async (req, res) => {
     const response = await exec(`atvremote --id ${process.env.APPLETVMAC} --airplay-credentials ${process.env.APPLETVTOKEN} play`);
     console.log(response);
     isPlaying = true;
-    res.send({ status: 200 })
+    res.send({ status: 200, response })
 })
 
 app.get('/pause', async (req, res) => {
     const response = await exec(`atvremote --id ${process.env.APPLETVMAC} --airplay-credentials ${process.env.APPLETVTOKEN} pause`);
     console.log(response);
     isPlaying = false;
-    res.send({ status: 200 })
+    res.send({ status: 200, response })
+});
+
+app.get('/playing', async (req, res) => {
+    const response = await exec(`atvremote --id ${process.env.APPLETVMAC} --airplay-credentials ${process.env.APPLETVTOKEN} pause`);
+    console.log(response);
+    isPlaying = false;
+    res.send({ status: 200, response })
 })
 
 app.get('/status', async (req, res) => {
