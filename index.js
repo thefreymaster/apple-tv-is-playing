@@ -16,16 +16,13 @@ ws.on('open', function open() {
     console.log("Homebridge connection open.")
 });
 
-ws.on('message', function incoming(data) {
-    console.log(data);
-});
-
 app.get('/api', async (req, res) => {
     res.send({
         "/api": {
             "/play": "play media",
             "/pause": "pause media",
-            "/playing": "get playing media status"
+            "/playing": "get playing media status",
+            "/status": "get status of playing"
         }
     })
 })
@@ -35,7 +32,7 @@ app.get('/api/play', async (req, res) => {
     stdout.on('data', function (data) {
         console.log(process.stdout.write(data));
         localStorage.setItem('isPlaying', true);
-        res.send({ status: 200, data: JSON.parse(data) })
+        res.send({ data: JSON.parse(data) })
     });
 })
 
@@ -44,7 +41,7 @@ app.get('/api/pause', async (req, res) => {
     stdout.on('data', function (data) {
         console.log(process.stdout.write(data));
         localStorage.setItem('isPlaying', false);
-        res.send({ status: 200, data: JSON.parse(data) })
+        res.send({ data: JSON.parse(data) })
     });
 });
 
@@ -54,7 +51,7 @@ app.get('/api/playing', async (req, res) => {
     stdout.on('data', function (data) {
         process.stdout.write(data)
         console.log(JSON.parse(data));
-        res.send({ status: 200, data: JSON.parse(data) })
+        res.send({ data: JSON.parse(data) })
     });
 })
 
@@ -77,10 +74,6 @@ const updates = async () => {
         }
         console.log(parsedData);
         process.stdout.write(data)
-    });
-    stdout.on('resume', function (data) {
-        process.stdout.write(data)
-        console.log(JSON.parse(data));
     });
 }
 
