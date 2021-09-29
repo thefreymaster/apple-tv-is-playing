@@ -66,11 +66,11 @@ const updates = async () => {
         const parsedData = JSON.parse(data);
         if (parsedData.device_state === 'paused') {
             localStorage.setItem('isPlaying', false);
-            ws.send(JSON.stringify({ "topic": "set", "payload": { "name": "isAppleTVPlaying2", "characteristic": "On", "value": false } }));
+            ws.send(JSON.stringify({ "topic": "set", "payload": { "name": "isAppleTVPlaying", "characteristic": "On", "value": false } }));
         }
         if (parsedData.device_state === 'playing') {
             localStorage.setItem('isPlaying', true);
-            ws.send(JSON.stringify({ "topic": "set", "payload": { "name": "isAppleTVPlaying2", "characteristic": "On", "value": true } }));
+            ws.send(JSON.stringify({ "topic": "set", "payload": { "name": "isAppleTVPlaying", "characteristic": "On", "value": true } }));
         }
         console.log(parsedData);
         process.stdout.write(data)
