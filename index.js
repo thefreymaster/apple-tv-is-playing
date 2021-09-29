@@ -10,13 +10,6 @@ const port = 4444;
 
 let isPlaying = false;
 
-const pause = async () => {
-    const response = await exec(`atvremote --id ${process.env.APPLETVMAC} --airplay-credentials ${process.env.APPLETVTOKEN} pause`);
-    console.log(response);
-    isPlaying = false;
-    res.send({ status: 200 })
-}
-
 app.get('/play', async (req, res) => {
     const response = await exec(`atvremote --id ${process.env.APPLETVMAC} --airplay-credentials ${process.env.APPLETVTOKEN} play`);
     console.log(response);
@@ -24,13 +17,11 @@ app.get('/play', async (req, res) => {
     res.send({ status: 200 })
 })
 
-app.get('/status', async (req, res) => {
-    res.send(isPlaying)
-})
-
-app.get('/pause', async (req, res) => {
-    await pause();
-    res.send('Hello World!');
+app.get('/pause', async () => {
+    const response = await exec(`atvremote --id ${process.env.APPLETVMAC} --airplay-credentials ${process.env.APPLETVTOKEN} pause`);
+    console.log(response);
+    isPlaying = false;
+    res.send({ status: 200 })
 })
 
 app.listen(port, () => {
