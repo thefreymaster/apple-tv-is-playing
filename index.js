@@ -17,7 +17,7 @@ app.get('/play', async (req, res) => {
     res.send({ status: 200 })
 })
 
-app.get('/pause', async () => {
+app.get('/pause', async (req, res) => {
     const response = await exec(`atvremote --id ${process.env.APPLETVMAC} --airplay-credentials ${process.env.APPLETVTOKEN} pause`);
     console.log(response);
     isPlaying = false;
