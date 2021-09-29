@@ -10,7 +10,7 @@ localStorage = new LocalStorage('./localstorage');
 const express = require('express')
 const app = express()
 const port = 4444;
-const ws = new WebSocket('ws://192.168.124.57:9700/');
+const ws = new WebSocket('ws://192.168.124.57:9800/');
 
 ws.on('open', function open() {
     console.log("Homebridge connection open.")
