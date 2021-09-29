@@ -36,5 +36,5 @@ app.get('/pause', async (req, res) => {
 app.listen(port, () => {
     console.log(process.env.APPLETVMAC);
     console.log(process.env.APPLETVTOKEN)
-    console.log(`Example app listening at http://localhost:${port}`)
+    console.log(`Apple TV 4K API http://localhost:${port}`)
 })
