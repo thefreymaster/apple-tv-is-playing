@@ -72,6 +72,12 @@ const updates = async () => {
             localStorage.setItem('isPlaying', true);
             ws.send(JSON.stringify({ "topic": "set", "payload": { "name": "isAppleTVPlaying", "characteristic": "On", "value": true } }));
         }
+        if(parsedData.power_state === 'on'){
+            ws.send(JSON.stringify({ "topic": "set", "payload": { "name": "isAppleTVOn", "characteristic": "On", "value": true } }));
+        }
+        if(parsedData.power_state === 'off'){
+            ws.send(JSON.stringify({ "topic": "set", "payload": { "name": "isAppleTVOn", "characteristic": "On", "value": false } }));
+        }
         console.log(parsedData);
         process.stdout.write(data)
     });
